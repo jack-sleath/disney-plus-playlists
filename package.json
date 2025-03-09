@@ -1,14 +1,15 @@
 {
   "name": "disney-plus-playlists",
-  "version": "1.0.0",
+  "version": "2025.3.92304",
   "description": "",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf dist",
+    "update-version": "node update-version.js",
     "start": "electron .",
-    "pack": "electron-builder --dir",
-    "dist": "npm run clean && electron-builder"
+    "pack": "npm run update-version && npm run clean && electron-builder --dir",
+    "dist": "npm run update-version && npm run clean && electron-builder"
   },
   "repository": {
     "type": "git",
@@ -39,14 +40,18 @@
       "main.js",
       "index.html",
       "package.json",
-      "**/*"
+      "**/*",
+      "playwright-scripts/create-playlist.js"
     ],
     "mac": {
       "category": "public.app-category.utilities",
       "target": "dmg"
     },
     "win": {
-      "target": "nsis"
+      "target": [
+        "nsis",
+        "portable"
+      ]
     },
     "linux": {
       "target": [

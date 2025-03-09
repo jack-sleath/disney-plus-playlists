@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Node Script Runner</title>
+  <title>Disney Plus Playlist</title>
 </head>
 <body>
   <h1>Run Node Script</h1>
@@ -18,7 +18,7 @@
 
     runBtn.addEventListener('click', () => {
       // Update 'your-script.js' with the path of the script you want to run.
-      ipcRenderer.send('run-node-script', 'your-script.js');
+      ipcRenderer.send('run-node-script', 'playwright-scripts/create-playlist.js');
     });
 
     ipcRenderer.on('script-output', (event, data) => {
