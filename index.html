@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Node Script Runner</title>
+</head>
+<body>
+  <h1>Run Node Script</h1>
+  <button id="runBtn">Run Script</button>
+  <pre id="output"></pre>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+
+    const runBtn = document.getElementById('runBtn');
+    const output = document.getElementById('output');
+
+    runBtn.addEventListener('click', () => {
+      // Update 'your-script.js' with the path of the script you want to run.
+      ipcRenderer.send('run-node-script', 'your-script.js');
+    });
+
+    ipcRenderer.on('script-output', (event, data) => {
+      output.textContent = data;
+    });
+  </script>
+</body>
+</html>
