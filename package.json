@@ -1,6 +1,6 @@
 {
   "name": "disney-plus-playlists",
-  "version": "2025.3.92304",
+  "version": "2025.3.92318",
   "description": "",
   "main": "main.js",
   "scripts": {
@@ -41,7 +41,20 @@
       "index.html",
       "package.json",
       "**/*",
-      "playwright-scripts/create-playlist.js"
+      "playwright-scripts/**"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/playwright/**"
+    ],
+    "extraResources": [
+      {
+        "from": "playwright-scripts/",
+        "to": "playwright-scripts/",
+        "filter": [
+          "**/*"
+        ]
+      }
     ],
     "mac": {
       "category": "public.app-category.utilities",

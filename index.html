@@ -18,7 +18,7 @@
 
     runBtn.addEventListener('click', () => {
       // Update 'your-script.js' with the path of the script you want to run.
-      ipcRenderer.send('run-node-script', 'playwright-scripts/create-playlist.js');
+      ipcRenderer.send('run-node-script', 'resources/playwright-scripts/create-playlist.js');
     });
 
     ipcRenderer.on('script-output', (event, data) => {
