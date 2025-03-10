@@ -5,5 +5,3 @@
 - [ ] Playlist viewer
 - [ ] Play Pause solution?
 - [ ] Timed in and out Section?
-- [ ] 
-- [ ] 
