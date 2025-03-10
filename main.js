@@ -11,7 +11,8 @@ function createWindow() {
       // Enable Node.js integration in the renderer process.
       nodeIntegration: true,
       contextIsolation: false,
-    }
+    },
+    autoHideMenuBar: true
   });
 
   win.loadFile('index.html');
