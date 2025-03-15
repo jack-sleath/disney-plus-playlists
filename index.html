@@ -5,81 +5,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Disney Plus Playlist</title>
-  <style>
-    /* Basic styling */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: #101010;
-      color: #dddddd;
-    }
-
-    nav {
-      background: #343131;
-      padding: 10px;
-      margin-bottom: 20px;
-    }
-
-    nav a {
-      margin-right: 15px;
-      text-decoration: none;
-      color: #c2c2c2;
-    }
-
-    nav a:hover {
-      text-decoration: underline;
-    }
-
-    /* Hide all pages by default */
-    .page {
-      display: none;
-    }
-
-    /* Show the active page */
-    .active {
-      display: block;
-    }
-    .form-field {
-      margin-bottom: 10px;
-    }
-    label {
-      display: inline-block;
-      width: 150px;
-    }
-    #episodeFields {
-      margin-left: 150px;
-      margin-bottom: 10px;
-    }
-    pre {
-      background: #3b3b3b;
-      padding: 10px;
-      border: 1px solid #b9b9b9;
-    }
-  </style>
+  <link rel="stylesheet" href="styling.css">
 </head>
 
 <body>
   <nav>
+    <a href="#logindetails">Login Details</a>
     <a href="#contentselector">Content Selector</a>
     <a href="#playlistcreator">Playlist Creator</a>
   </nav>
 
+  <div id="logindetails" class="page active">
+    <h1>Playlist Creator</h1>
+    <button id="runBtn">Run Script</button>
+    <pre id="playlistOutput"></pre>
+  </div>
+
+
   <!-- Predefined page sections -->
-  <div id="contentselector" class="page active">
+  <div id="contentselector" class="page">
     <h1>Content Selector</h1>
     <div class="form-field">
       <label for="name">Name:</label>
-      <inut type="text" id="name" placeholder="Enter Name">
+      <input type="text" id="name" placeholder="Enter Name">
     </div>
-  
+
     <div class="form-field">
       <label for="platform">Streaming Platform:</label>
       <select id="platform">
         <option value="disney">Disney+</option>
       </select>
     </div>
-  
+
     <div class="form-field">
       <label for="type">Type:</label>
       <select id="type">
@@ -87,7 +44,7 @@
         <option value="episode">Episode</option>
       </select>
     </div>
-  
+
     <div id="episodeFields" style="display: none;">
       <div class="form-field">
         <label for="season">Season:</label>
@@ -98,94 +55,36 @@
         <input type="text" id="episode" placeholder="Enter Episode">
       </div>
     </div>
-  
+
     <button id="addButton">Add to Array</button>
-  
+
     <h3>JSON Array:</h3>
-    <pre id="output">[]</pre>
+    <pre id="contentOutput">[]</pre>
   </div>
 
   <div id="playlistcreator" class="page">
     <h1>Playlist Creator</h1>
     <button id="runBtn">Run Script</button>
-    <pre id="output"></pre>
+    <pre id="playlistOutput"></pre>
   </div>
 
   <script>
     const { ipcRenderer } = require('electron');
 
     const runBtn = document.getElementById('runBtn');
-    const output = document.getElementById('output');
+    const playlistOutput = document.getElementById('playlistOutput');
 
     runBtn.addEventListener('click', () => {
       // Update 'your-script.js' with the path of the script you want to run.
-      ipcRenderer.send('run-node-script', 'resources/playwright-scripts/create-playlist.js');
+      ipcRenderer.send('run-node-script', 'playwright-scripts/create-playlist.js');
     });
 
     ipcRenderer.on('script-output', (event, data) => {
-      output.textContent = data;
+      playlistOutput.textContent = data;
     });
   </script>
-  <script>
-    // Function to show the page with the given id and hide others
-    function showPage(pageId) {
-      const pages = document.querySelectorAll('.page');
-      pages.forEach(page => {
-        if (page.id === pageId) {
-          page.classList.add('active');
-        } else {
-          page.classList.remove('active');
-        }
-      });
-    }
-
-    // Router function based on the URL hash
-    function router() {
-      const hash = window.location.hash.substring(1) || 'home';
-      showPage(hash);
-    }
-
-    // Listen for hash changes and load the appropriate content
-    window.addEventListener('hashchange', router);
-    window.addEventListener('load', router);
-  </script>
-  <script>
-    // Initialize JSON array and index counter
-    let jsonArray = [];
-    let index = 0;
-
-    // Toggle additional fields based on selection of "Episode"
-    document.getElementById('type').addEventListener('change', function() {
-      if (this.value === 'episode') {
-        document.getElementById('episodeFields').style.display = 'block';
-      } else {
-        document.getElementById('episodeFields').style.display = 'none';
-      }
-    });
-
-    // Add entry to JSON array when the button is clicked
-    document.getElementById('addButton').addEventListener('click', function() {
-      const name = document.getElementById('name').value;
-      const platform = document.getElementById('platform').value;
-      const type = document.getElementById('type').value;
-
-      // Build entry object with the current index
-      let entry = { index: index, name: name, platform: platform, type: type };
-
-      // If episode is selected, add season and episode fields
-      if (type === 'episode') {
-        entry.season = document.getElementById('season').value;
-        entry.episode = document.getElementById('episode').value;
-      }
-
-      // Add the entry to the array and increment the index
-      jsonArray.push(entry);
-      index++;
-
-      // Display the updated JSON array in a pretty format
-      document.getElementById('output').textContent = JSON.stringify(jsonArray, null, 2);
-    });
-  </script>
+  <script src="paging.js"></script>
+  <script src="content-selector.js"></script>
 </body>
 
 </html>

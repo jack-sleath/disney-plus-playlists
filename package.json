@@ -1,6 +1,6 @@
 {
   "name": "disney-plus-playlists",
-  "version": "2025.3.102019",
+  "version": "2025.3.151813",
   "description": "",
   "main": "main.js",
   "scripts": {
@@ -45,7 +45,9 @@
     ],
     "asar": true,
     "asarUnpack": [
-      "node_modules/playwright/**"
+      "node_modules/playwright/**",
+      "node_modules/playwright-core/**",
+      "playwright-scripts/**"
     ],
     "extraResources": [
       {

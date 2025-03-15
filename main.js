@@ -12,7 +12,7 @@ function createWindow() {
       nodeIntegration: true,
       contextIsolation: false,
     },
-    autoHideMenuBar: true
+    //autoHideMenuBar: true
   });
 
   win.loadFile('index.html');
@@ -23,9 +23,21 @@ app.whenReady().then(createWindow);
 
 // Listen for messages from the renderer to run Node scripts.
 ipcMain.on('run-node-script', (event, scriptPath) => {
-  exec(`node ${scriptPath}`, (error, stdout, stderr) => {
+  let absoluteScriptPath;
+  
+  if (app.isPackaged) {
+    // When packaged, the unpacked files are located in app.asar.unpacked
+    absoluteScriptPath = path.join(process.resourcesPath, 'app.asar.unpacked', scriptPath);
+  } else {
+    // During development, use a relative path resolved to an absolute path.
+    absoluteScriptPath = path.resolve(scriptPath);
+  }
+  
+  console.log(`Executing script at: ${absoluteScriptPath}`);
+  
+  exec(`node "${absoluteScriptPath}"`, (error, stdout, stderr) => {
     if (error) {
-      console.error(`Error executing ${scriptPath}:`, error);
+      console.error(`Error executing ${absoluteScriptPath}:`, error);
       event.reply('script-output', `Error: ${error.message}`);
       return;
     }
